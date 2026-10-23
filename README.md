@@ -4,6 +4,13 @@ One pack for **power**, **water**, **home fixtures**, **utility bills**, **gover
 
 Bedrock **1.26+** · Beta APIs required.
 
+## Features (v1.3.0)
+
+### Household devices
+**Plug into outlets** (hold item → outlet → Plug): desk/floor lamp, chargers, toaster, coffee maker, kettle, blender, hair dryer, vacuum, space heater, fan, console, radio, clock, monitor, printer, modem, power strip, string lights.
+
+**Major appliances** (blocks, need live power): fridge, stove, microwave, dishwasher, washer, dryer, TV, router, AC, furnace, ceiling fan. Washer/dishwasher also need water pressure.
+
 ## Features (v1.1.0)
 
 ### Hierarchical water

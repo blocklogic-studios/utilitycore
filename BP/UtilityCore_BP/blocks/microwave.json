@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:microwave",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#28282D",
+      "minecraft:geometry": "geometry.utilitycore.microwave",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_microwave",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -5.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          10,
+          8,
+          8
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -5.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          10,
+          8,
+          8
+        ]
+      },
+      "utilitycore:microwave": {}
+    }
+  }
+}

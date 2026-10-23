@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:router",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#1E1E23",
+      "minecraft:geometry": "geometry.utilitycore.router",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_router",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -4.0,
+          0,
+          -3.0
+        ],
+        "size": [
+          8,
+          4,
+          6
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -4.0,
+          0,
+          -3.0
+        ],
+        "size": [
+          8,
+          4,
+          6
+        ]
+      },
+      "utilitycore:router": {}
+    }
+  }
+}

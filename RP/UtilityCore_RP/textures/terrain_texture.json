@@ -103,6 +103,39 @@
     },
     "utilitycore_water_heater": {
       "textures": "textures/blocks/water_heater"
+    },
+    "utilitycore_fridge": {
+      "textures": "textures/blocks/fridge"
+    },
+    "utilitycore_stove": {
+      "textures": "textures/blocks/stove"
+    },
+    "utilitycore_microwave": {
+      "textures": "textures/blocks/microwave"
+    },
+    "utilitycore_dishwasher": {
+      "textures": "textures/blocks/dishwasher"
+    },
+    "utilitycore_washer": {
+      "textures": "textures/blocks/washer"
+    },
+    "utilitycore_dryer": {
+      "textures": "textures/blocks/dryer"
+    },
+    "utilitycore_tv": {
+      "textures": "textures/blocks/tv"
+    },
+    "utilitycore_router": {
+      "textures": "textures/blocks/router"
+    },
+    "utilitycore_ac_unit": {
+      "textures": "textures/blocks/ac_unit"
+    },
+    "utilitycore_furnace": {
+      "textures": "textures/blocks/furnace"
+    },
+    "utilitycore_ceiling_fan": {
+      "textures": "textures/blocks/ceiling_fan"
     }
   }
 }

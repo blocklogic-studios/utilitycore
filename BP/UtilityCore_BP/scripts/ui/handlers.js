@@ -32,6 +32,17 @@ const BLOCK_TYPES = {
   "utilitycore:utility_desk": "utility_desk",
   "utilitycore:id_kiosk": "id_kiosk",
   "utilitycore:insurance_desk": "insurance_desk",
+  "utilitycore:ceiling_fan": "ceiling_fan",
+  "utilitycore:furnace": "furnace",
+  "utilitycore:ac_unit": "ac_unit",
+  "utilitycore:router": "router",
+  "utilitycore:tv": "tv",
+  "utilitycore:dryer": "dryer",
+  "utilitycore:washer": "washer",
+  "utilitycore:dishwasher": "dishwasher",
+  "utilitycore:microwave": "microwave",
+  "utilitycore:stove": "stove",
+  "utilitycore:fridge": "fridge",
   "utilitycore:reservoir": "reservoir",
   "utilitycore:well_pump": "well_pump",
   "utilitycore:water_main": "water_main",
@@ -86,6 +97,54 @@ export function setupUIHandlers(util) {
       const dim = ev.player?.dimension?.id || b.dimension?.id;
       util.deregisterAt(b.x, b.y, b.z, dim);
     } catch (e) {}
+  });
+}
+
+
+function showPlugs(player, util, outletKey) {
+  const live = util.getNode(outletKey);
+  const plugs = (live && live.plugs) || [];
+  if (!plugs.length) {
+    player.sendMessage("§7Nothing plugged in");
+    return;
+  }
+  const form = new ActionFormData().title("Plugged devices");
+  for (const p of plugs) {
+    form.button(`${p.name}\n${p.on ? "ON" : "off"} · load ${p.load}`);
+  }
+  form.button("Close");
+  form.show(player).then((res) => {
+    if (res.canceled || res.selection === plugs.length) return;
+    const idx = res.selection;
+    nextForm(() => {
+      new ActionFormData()
+        .title(plugs[idx].name)
+        .button(plugs[idx].on ? "Switch off" : "Switch on")
+        .button("Unplug")
+        .button("Back")
+        .show(player)
+        .then((r2) => {
+          if (r2.canceled || r2.selection === 2) return;
+          if (r2.selection === 0) {
+            util.togglePlug(outletKey, idx);
+            player.sendMessage("§aToggled");
+          }
+          if (r2.selection === 1) {
+            const out = util.unplugDevice(outletKey, idx);
+            if (out.ok && out.removed) {
+              try {
+                const stack = new ItemStack(out.removed.itemTypeId, 1);
+                const inv = player.getComponent("inventory")?.container;
+                if (inv) {
+                  const left = inv.addItem(stack);
+                  if (left) player.dimension.spawnItem(left, player.location);
+                }
+              } catch (e) {}
+              player.sendMessage("§aUnplugged");
+            }
+          }
+        });
+    });
   });
 }
 
@@ -286,7 +345,64 @@ function showNode(player, util, node) {
   const form = new ActionFormData().title("Equipment").body(body);
 
   // Fixtures: use
-  if (["outlet", "light_fixture", "sink", "toilet", "shower"].includes(node.type)) {
+  if (node.type === "outlet") {
+    const plugs = node.plugs || [];
+    let pbody = body + `\n§7Plugs: §f${plugs.length}`;
+    for (const p of plugs) pbody += `\n§8- ${p.name} ${p.on ? "§aON" : "§7off"}`;
+    form.body(pbody);
+    form.button("Plug held item");
+    form.button("Manage plugs");
+    form.button("Toggle online");
+    form.button("Close");
+    form.show(player).then((res) => {
+      if (res.canceled || res.selection === 3) return;
+      if (res.selection === 0) {
+        let held = null;
+        try {
+          const slot = player.selectedSlotIndex ?? player.selectedSlot ?? 0;
+          held = player.getComponent("inventory")?.container?.getItem(slot);
+        } catch (e) {}
+        if (!held) return player.sendMessage("§cHold a household device to plug in");
+        const r = util.plugDevice(node.key, held.typeId);
+        if (!r.ok) return player.sendMessage(`§c${r.error}`);
+        try {
+          const inv = player.getComponent("inventory")?.container;
+          if (inv) {
+            const slot2 = player.selectedSlotIndex ?? player.selectedSlot ?? 0;
+            if (held.amount <= 1) inv.setItem(slot2, undefined);
+            else { held.amount -= 1; inv.setItem(slot2, held); }
+          }
+        } catch (e) {}
+        player.sendMessage(`§aPlugged in`);
+      }
+      if (res.selection === 1) nextForm(() => showPlugs(player, util, node.key));
+      if (res.selection === 2) {
+        const r = util.toggleNode(node.key);
+        player.sendMessage(r.online ? "§aOnline" : "§eOffline");
+      }
+    });
+    return;
+  }
+
+  if (["fridge","stove","microwave","dishwasher","washer","dryer","tv","router","ac_unit","furnace","ceiling_fan"].includes(node.type)) {
+    const run = node.running ? "§aRUNNING" : "§7idle";
+    form.body(body + `\n§7Status: ${run}`);
+    form.button(node.running ? "Turn off" : "Turn on / run");
+    form.button("Close");
+    form.show(player).then((res) => {
+      if (res.canceled || res.selection === 1) return;
+      if (node.running) {
+        util.stopAppliance(node.key);
+        player.sendMessage("§eStopped");
+      } else {
+        const r = util.runAppliance(node.key, player.name);
+        player.sendMessage(r.ok ? `§a${r.message}` : `§c${r.error}`);
+      }
+    });
+    return;
+  }
+
+  if (["light_fixture", "sink", "toilet", "shower"].includes(node.type)) {
     form.button("Use");
     form.button("Toggle online");
     form.button("Close");

@@ -22,6 +22,66 @@
     },
     "utilitycore_tablet": {
       "textures": "textures/items/tablet"
+    },
+    "utilitycore_desk_lamp": {
+      "textures": "textures/items/desk_lamp"
+    },
+    "utilitycore_floor_lamp": {
+      "textures": "textures/items/floor_lamp"
+    },
+    "utilitycore_phone_charger": {
+      "textures": "textures/items/phone_charger"
+    },
+    "utilitycore_laptop_charger": {
+      "textures": "textures/items/laptop_charger"
+    },
+    "utilitycore_toaster": {
+      "textures": "textures/items/toaster"
+    },
+    "utilitycore_coffee_maker": {
+      "textures": "textures/items/coffee_maker"
+    },
+    "utilitycore_kettle": {
+      "textures": "textures/items/kettle"
+    },
+    "utilitycore_blender": {
+      "textures": "textures/items/blender"
+    },
+    "utilitycore_hair_dryer": {
+      "textures": "textures/items/hair_dryer"
+    },
+    "utilitycore_vacuum": {
+      "textures": "textures/items/vacuum"
+    },
+    "utilitycore_space_heater": {
+      "textures": "textures/items/space_heater"
+    },
+    "utilitycore_box_fan": {
+      "textures": "textures/items/box_fan"
+    },
+    "utilitycore_game_console": {
+      "textures": "textures/items/game_console"
+    },
+    "utilitycore_radio": {
+      "textures": "textures/items/radio"
+    },
+    "utilitycore_clock_radio": {
+      "textures": "textures/items/clock_radio"
+    },
+    "utilitycore_monitor": {
+      "textures": "textures/items/monitor"
+    },
+    "utilitycore_printer": {
+      "textures": "textures/items/printer"
+    },
+    "utilitycore_modem": {
+      "textures": "textures/items/modem"
+    },
+    "utilitycore_power_strip": {
+      "textures": "textures/items/power_strip"
+    },
+    "utilitycore_string_lights": {
+      "textures": "textures/items/string_lights"
     }
   }
 }

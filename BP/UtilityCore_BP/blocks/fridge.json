@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:fridge",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#DCDCE6",
+      "minecraft:geometry": "geometry.utilitycore.fridge",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_fridge",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -6.0,
+          0,
+          -6.0
+        ],
+        "size": [
+          12,
+          20,
+          12
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -6.0,
+          0,
+          -6.0
+        ],
+        "size": [
+          12,
+          20,
+          12
+        ]
+      },
+      "utilitycore:fridge": {}
+    }
+  }
+}

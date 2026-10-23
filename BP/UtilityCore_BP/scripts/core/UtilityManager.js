@@ -30,6 +30,8 @@ const POWER_LOAD = {
   outlet: 3,
   light_fixture: 2,
   light_switch: 0,
+  fridge: 8, stove: 20, microwave: 12, dishwasher: 14, washer: 10, dryer: 18,
+  tv: 6, router: 2, ac_unit: 16, furnace: 14, ceiling_fan: 3,
   transformer: 1,
   substation: 2,
   neighborhood_room: 2,
@@ -59,7 +61,9 @@ const POWER_TIER = {
   conduit: 5,
   outlet: 5,
   light_switch: 5,
-  light_fixture: 5
+  light_fixture: 5,
+  fridge: 5, stove: 5, microwave: 5, dishwasher: 5, washer: 5, dryer: 5,
+  tv: 5, router: 5, ac_unit: 5, furnace: 5, ceiling_fan: 5
 };
 
 /** Max link distance by tier pair (blocks) */
@@ -153,6 +157,46 @@ function waterTierRange(ta, tb) {
   return WATER_TIER_RANGE[`${a}-${b}`] || WATER_TIER_RANGE.default;
 }
 
+/** Plug-in devices (item → watts-ish load + labels) */
+export const PLUGGABLE = {
+  "utilitycore:desk_lamp": { name: "Desk Lamp", load: 2, kind: "light" },
+  "utilitycore:floor_lamp": { name: "Floor Lamp", load: 3, kind: "light" },
+  "utilitycore:phone_charger": { name: "Phone Charger", load: 1, kind: "charge" },
+  "utilitycore:laptop_charger": { name: "Laptop Charger", load: 2, kind: "charge" },
+  "utilitycore:toaster": { name: "Toaster", load: 8, kind: "kitchen" },
+  "utilitycore:coffee_maker": { name: "Coffee Maker", load: 6, kind: "kitchen" },
+  "utilitycore:kettle": { name: "Electric Kettle", load: 10, kind: "kitchen" },
+  "utilitycore:blender": { name: "Blender", load: 5, kind: "kitchen" },
+  "utilitycore:hair_dryer": { name: "Hair Dryer", load: 12, kind: "bath" },
+  "utilitycore:vacuum": { name: "Vacuum", load: 9, kind: "clean" },
+  "utilitycore:space_heater": { name: "Space Heater", load: 15, kind: "hvac" },
+  "utilitycore:box_fan": { name: "Box Fan", load: 3, kind: "hvac" },
+  "utilitycore:game_console": { name: "Game Console", load: 7, kind: "media" },
+  "utilitycore:radio": { name: "Radio", load: 1, kind: "media" },
+  "utilitycore:clock_radio": { name: "Alarm Clock", load: 1, kind: "media" },
+  "utilitycore:monitor": { name: "Monitor", load: 4, kind: "office" },
+  "utilitycore:printer": { name: "Printer", load: 5, kind: "office" },
+  "utilitycore:modem": { name: "Cable Modem", load: 2, kind: "net" },
+  "utilitycore:power_strip": { name: "Power Strip", load: 0, kind: "strip", slots: 4 },
+  "utilitycore:string_lights": { name: "String Lights", load: 2, kind: "light" }
+};
+
+/** Hardwired major appliances (blocks) */
+export const APPLIANCES = {
+  fridge: { name: "Refrigerator", load: 8, always: true },
+  stove: { name: "Electric Stove", load: 20, always: false },
+  microwave: { name: "Microwave", load: 12, always: false },
+  dishwasher: { name: "Dishwasher", load: 14, always: false, water: 20 },
+  washer: { name: "Washing Machine", load: 10, always: false, water: 40 },
+  dryer: { name: "Clothes Dryer", load: 18, always: false },
+  tv: { name: "Television", load: 6, always: false },
+  router: { name: "Wi-Fi Router", load: 2, always: true },
+  ac_unit: { name: "Window AC", load: 16, always: false },
+  furnace: { name: "Furnace", load: 14, always: false },
+  ceiling_fan: { name: "Ceiling Fan", load: 3, always: false }
+};
+
+
 
 export class UtilityManager {
   constructor() {
@@ -230,6 +274,8 @@ export class UtilityManager {
       kwh: 0,
       liters: 0,
       linkedAccount: null,
+      plugs: type === "outlet" ? [] : undefined,
+      running: false,
       registeredAt: Date.now()
     };
     this.nodes.set(key, node);
@@ -291,6 +337,10 @@ export class UtilityManager {
 
   getNodeAt(x, y, z, dim) {
     return this.nodes.get(keyAt(dim, x, y, z));
+  }
+
+  getNode(key) {
+    return this.nodes.get(key);
   }
 
   neighbors(node, range) {
@@ -666,6 +716,111 @@ export class UtilityManager {
     return { ok: true, claim };
   }
 
+
+  plugDevice(outletKey, itemTypeId) {
+    const n = this.nodes.get(outletKey);
+    if (!n || n.type !== "outlet") return { ok: false, error: "Not an outlet" };
+    const def = PLUGGABLE[itemTypeId];
+    if (!def) return { ok: false, error: "That item does not plug in" };
+    if (!n.plugs) n.plugs = [];
+    const max = 2;
+    if (n.plugs.length >= max) return { ok: false, error: "Outlet full (2 plugs). Use a power strip." };
+    // power strip expands capacity when plugged
+    for (const p of n.plugs) {
+      if (p.itemTypeId === "utilitycore:power_strip") {
+        // strip already there — allow up to 4 more total handled below
+      }
+    }
+    let capacity = 2;
+    if (n.plugs.some((p) => p.itemTypeId === "utilitycore:power_strip")) capacity = 6;
+    if (itemTypeId === "utilitycore:power_strip") capacity = 6;
+    if (n.plugs.length >= capacity) return { ok: false, error: "No free slots" };
+    n.plugs.push({
+      itemTypeId,
+      name: def.name,
+      load: def.load || 0,
+      kind: def.kind,
+      on: true
+    });
+    n.load = 3 + n.plugs.reduce((s, p) => s + (p.on ? (p.load || 0) : 0), 0);
+    this.save();
+    return { ok: true, plugs: n.plugs };
+  }
+
+  unplugDevice(outletKey, index) {
+    const n = this.nodes.get(outletKey);
+    if (!n || n.type !== "outlet") return { ok: false, error: "Not an outlet" };
+    if (!n.plugs || index < 0 || index >= n.plugs.length) return { ok: false, error: "Empty slot" };
+    const removed = n.plugs.splice(index, 1)[0];
+    n.load = 3 + n.plugs.reduce((s, p) => s + (p.on ? (p.load || 0) : 0), 0);
+    this.save();
+    return { ok: true, removed };
+  }
+
+  togglePlug(outletKey, index) {
+    const n = this.nodes.get(outletKey);
+    if (!n?.plugs?.[index]) return { ok: false, error: "No device" };
+    n.plugs[index].on = !n.plugs[index].on;
+    n.load = 3 + n.plugs.reduce((s, p) => s + (p.on ? (p.load || 0) : 0), 0);
+    this.save();
+    return { ok: true, on: n.plugs[index].on };
+  }
+
+  /** Major appliance needs live power within 10 blocks on same circuit path */
+  applianceHasPower(node) {
+    const st = this.status("power");
+    if (!st.powered.has(node.key)) return false;
+    return true;
+  }
+
+  runAppliance(key, playerName) {
+    const n = this.nodes.get(key);
+    if (!n || !APPLIANCES[n.type]) return { ok: false, error: "Not an appliance" };
+    const def = APPLIANCES[n.type];
+    if (!this.applianceHasPower(n)) return { ok: false, error: "No power — check breakers & outlets upstream" };
+    if (def.water) {
+      const ws = this.status("water");
+      if (!ws.powered.has(n.key) && !this._nearWaterSupply(n)) {
+        // soft: allow if any water pressure in range of plumbing
+        if (!this._nearWaterSupply(n)) return { ok: false, error: "No water pressure" };
+      }
+    }
+    n.running = true;
+    n.load = def.load;
+    // one-shot water use
+    if (def.water) {
+      n.liters = round2((n.liters || 0) + def.water);
+      // also add to nearby water meter
+      for (const m of this.nodes.values()) {
+        if (m.type === "water_meter" && m.dim === n.dim && dist(m, n) <= 16) {
+          m.liters = round2((m.liters || 0) + def.water);
+        }
+      }
+    }
+    this.save();
+    return { ok: true, message: `${def.name} running`, load: def.load };
+  }
+
+  stopAppliance(key) {
+    const n = this.nodes.get(key);
+    if (!n || !APPLIANCES[n.type]) return { ok: false, error: "Not an appliance" };
+    const def = APPLIANCES[n.type];
+    n.running = false;
+    n.load = def.always ? def.load : 0;
+    this.save();
+    return { ok: true };
+  }
+
+  _nearWaterSupply(node) {
+    const ws = this.status("water");
+    for (const k of ws.powered) {
+      const o = this.nodes.get(k);
+      if (!o || o.dim !== node.dim) continue;
+      if (dist(o, node) <= 20) return true;
+    }
+    return false;
+  }
+
   publishBridges() {
     const power = this.status("power");
     const water = this.status("water");
@@ -703,7 +858,27 @@ export class UtilityManager {
     if (power.online && this._tick % 20 === 0) {
       for (const key of power.powered) {
         const n = this.nodes.get(key);
-        if (n && n.type === "electric_meter") n.kwh = round2((n.kwh || 0) + 0.05);
+        if (!n) continue;
+        if (n.type === "electric_meter") n.kwh = round2((n.kwh || 0) + 0.05);
+        // plugged loads on live outlets
+        if (n.type === "outlet" && n.plugs) {
+          const plugLoad = n.plugs.reduce((s, p) => s + (p.on ? (p.load || 0) : 0), 0);
+          if (plugLoad > 0) {
+            n.kwh = round2((n.kwh || 0) + plugLoad * 0.002);
+            // push to nearby meter
+            for (const m of this.nodes.values()) {
+              if (m.type === "electric_meter" && m.dim === n.dim && dist(m, n) <= 20) {
+                m.kwh = round2((m.kwh || 0) + plugLoad * 0.002);
+              }
+            }
+          }
+        }
+        // always-on appliances
+        if (APPLIANCES[n.type] && APPLIANCES[n.type].always) {
+          n.running = true;
+          n.load = APPLIANCES[n.type].load;
+          n.kwh = round2((n.kwh || 0) + APPLIANCES[n.type].load * 0.001);
+        }
       }
     }
     if (water.online && this._tick % 20 === 0) {

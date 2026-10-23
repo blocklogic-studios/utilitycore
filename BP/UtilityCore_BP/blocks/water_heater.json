@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:water_heater",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.4
+      },
+      "minecraft:map_color": "#50505A",
+      "minecraft:geometry": "geometry.utilitycore.water_heater",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_water_heater",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -5.0,
+          0,
+          -5.0
+        ],
+        "size": [
+          10,
+          16,
+          10
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -5.0,
+          0,
+          -5.0
+        ],
+        "size": [
+          10,
+          16,
+          10
+        ]
+      },
+      "utilitycore:water_heater": {}
+    }
+  }
+}

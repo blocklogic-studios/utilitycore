@@ -32,6 +32,14 @@ const BLOCK_TYPES = {
   "utilitycore:utility_desk": "utility_desk",
   "utilitycore:id_kiosk": "id_kiosk",
   "utilitycore:insurance_desk": "insurance_desk",
+  "utilitycore:reservoir": "reservoir",
+  "utilitycore:well_pump": "well_pump",
+  "utilitycore:water_main": "water_main",
+  "utilitycore:pump_station": "pump_station",
+  "utilitycore:plumbing_room": "plumbing_room",
+  "utilitycore:shutoff_valve": "shutoff_valve",
+  "utilitycore:branch_pipe": "branch_pipe",
+  "utilitycore:water_heater": "water_heater",
   "utilitycore:generator_large": "generator_large"
 };
 
@@ -264,12 +272,15 @@ function showNode(player, util, node) {
     `§7Online: ${node.online ? "§aON" : "§cOFF"}` +
     (node.broken ? " §cTRIPPED" : "");
   if (node.type === "generator_diesel" || node.type === "generator_large") body += `\n§7Fuel: §f${node.fuel || 0}%`;
-  if (node.type === "water_plant" || node.type === "water_tower")
+  if (node.type === "water_plant" || node.type === "water_tower" || node.type === "reservoir" || node.type === "well_pump")
     body += `\n§7Level: §f${Math.round(node.waterLevel || 0)}%`;
   if (node.type === "electric_meter") body += `\n§7kWh: §f${(node.kwh || 0).toFixed(2)}`;
   if (node.type === "water_meter") body += `\n§7L: §f${(node.liters || 0).toFixed(1)}`;
   if (node.net === "power" && util.describePowerPath) {
     body += `\n§8${util.describePowerPath(node.key)}`;
+  }
+  if (node.net === "water" && util.describeWaterPath) {
+    body += `\n§8${util.describeWaterPath(node.key)}`;
   }
 
   const form = new ActionFormData().title("Equipment").body(body);
@@ -311,7 +322,7 @@ function showNode(player, util, node) {
     return;
   }
 
-  if (node.type === "water_plant" || node.type === "water_tower") {
+  if (node.type === "water_plant" || node.type === "water_tower" || node.type === "reservoir" || node.type === "well_pump") {
     form.button("Refill +40");
     form.button("Toggle");
     form.button("Close");
@@ -348,6 +359,19 @@ function showNode(player, util, node) {
   }
 
   
+  if (node.type === "shutoff_valve") {
+    const state = node.valveOpen !== false ? "OPEN" : "CLOSED";
+    form.body(body + "\n§7Valve: §f" + state);
+    form.button(node.valveOpen !== false ? "Close valve" : "Open valve");
+    form.button("Close");
+    form.show(player).then((res) => {
+      if (res.canceled || res.selection === 1) return;
+      const r = util.toggleValve(node.key);
+      player.sendMessage(r.ok ? (r.valveOpen ? "§aValve open" : "§eValve closed") : `§c${r.error}`);
+    });
+    return;
+  }
+
   if (node.type === "light_switch" || node.type === "circuit_breaker") {
     const state = node.switchOn !== false ? "CLOSED/ON" : "OPEN/OFF";
     form.body(body + "\n§7State: §f" + state);

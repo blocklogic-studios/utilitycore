@@ -79,6 +79,30 @@
     },
     "utilitycore_light_switch": {
       "textures": "textures/blocks/light_switch"
+    },
+    "utilitycore_reservoir": {
+      "textures": "textures/blocks/reservoir"
+    },
+    "utilitycore_well_pump": {
+      "textures": "textures/blocks/well_pump"
+    },
+    "utilitycore_water_main": {
+      "textures": "textures/blocks/water_main"
+    },
+    "utilitycore_pump_station": {
+      "textures": "textures/blocks/pump_station"
+    },
+    "utilitycore_plumbing_room": {
+      "textures": "textures/blocks/plumbing_room"
+    },
+    "utilitycore_shutoff_valve": {
+      "textures": "textures/blocks/shutoff_valve"
+    },
+    "utilitycore_branch_pipe": {
+      "textures": "textures/blocks/branch_pipe"
+    },
+    "utilitycore_water_heater": {
+      "textures": "textures/blocks/water_heater"
     }
   }
 }

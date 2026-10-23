@@ -6,6 +6,17 @@ Bedrock **1.26+** · Beta APIs required.
 
 ## Features (v1.1.0)
 
+### Hierarchical water
+```
+Reservoir / plant / well
+  → Water mains · tower · junctions
+    → Neighborhood pump station
+      → Building plumbing room
+        → Shutoff valve · meter · heater
+          → Branch pipes → sink / toilet / shower
+```
+Closed shutoff = dry fixtures downstream. Heater in range = hot water on use.
+
 ### Hierarchical power
 ```
 Large/Diesel/Solar gen

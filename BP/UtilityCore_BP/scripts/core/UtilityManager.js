@@ -89,10 +89,70 @@ function tierRange(ta, tb) {
   return TIER_RANGE[`${a}-${b}`] || TIER_RANGE.default;
 }
 
-const WATER_GEN = { water_plant: 80, water_tower: 40 };
-const WATER_LOAD = {
-  water_meter: 2, sink: 5, toilet: 8, shower: 12, pipe_junction: 0
+/** Source capacity */
+const WATER_GEN = {
+  reservoir: 250,
+  water_plant: 120,
+  well_pump: 60,
+  water_tower: 40
 };
+
+const WATER_LOAD = {
+  water_meter: 2,
+  pump_station: 3,
+  plumbing_room: 2,
+  shutoff_valve: 1,
+  water_heater: 4,
+  sink: 5,
+  toilet: 8,
+  shower: 12,
+  pipe_junction: 0,
+  water_main: 0,
+  branch_pipe: 0
+};
+
+/**
+ * Water hierarchy
+ * 0 source → 1 transmission → 2 neighborhood → 3 building → 4 branch/meter → 5 fixture
+ */
+const WATER_TIER = {
+  reservoir: 0,
+  water_plant: 0,
+  well_pump: 0,
+  water_tower: 1,
+  water_main: 1,
+  pipe_junction: 1,
+  pump_station: 2,
+  plumbing_room: 3,
+  shutoff_valve: 4,
+  water_meter: 4,
+  water_heater: 4,
+  branch_pipe: 5,
+  sink: 5,
+  toilet: 5,
+  shower: 5
+};
+
+const WATER_TIER_RANGE = {
+  "0-1": 48,
+  "0-0": 32,
+  "1-2": 40,
+  "1-1": 36,
+  "2-3": 28,
+  "2-2": 24,
+  "3-4": 16,
+  "3-3": 12,
+  "4-5": 12,
+  "4-4": 10,
+  "5-5": 8,
+  default: 16
+};
+
+function waterTierRange(ta, tb) {
+  const a = Math.min(ta, tb), b = Math.max(ta, tb);
+  return WATER_TIER_RANGE[`${a}-${b}`] || WATER_TIER_RANGE.default;
+}
+
 
 export class UtilityManager {
   constructor() {
@@ -148,19 +208,23 @@ export class UtilityManager {
     const key = keyAt(dim, x, y, z);
     if (this.nodes.has(key)) return this.nodes.get(key);
     const net = this._networkOf(type);
-    const tier = POWER_TIER[type];
     const node = {
       id: `n_${this.next.node++}`,
       key, type, net,
-      tier: tier != null ? tier : null,
+      tier: (net === "power" ? POWER_TIER[type] : WATER_TIER[type]) != null
+        ? (net === "power" ? POWER_TIER[type] : WATER_TIER[type])
+        : null,
       x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dim,
       owner,
       online: true,
       broken: false,
-      switchOn: type === "light_switch" ? true : undefined,
+      switchOn: (type === "light_switch" || type === "circuit_breaker") ? true : undefined,
+      valveOpen: type === "shutoff_valve" ? true : undefined,
       linkedLights: type === "light_switch" ? [] : undefined,
       fuel: (type === "generator_diesel" || type === "generator_large") ? 100 : 0,
-      waterLevel: type === "water_tower" ? 80 : (type === "water_plant" ? 100 : 0),
+      waterLevel: WATER_GEN[type]
+        ? (type === "reservoir" ? 100 : type === "water_plant" ? 100 : type === "well_pump" ? 90 : 80)
+        : 0,
       generation: POWER_GEN[type] || WATER_GEN[type] || 0,
       load: POWER_LOAD[type] || WATER_LOAD[type] || 0,
       kwh: 0,
@@ -176,7 +240,24 @@ export class UtilityManager {
   _networkOf(type) {
     if (POWER_TIER[type] != null || POWER_GEN[type] || POWER_LOAD[type] !== undefined)
       return "power";
+    if (WATER_TIER[type] != null || WATER_GEN[type] || WATER_LOAD[type] !== undefined)
+      return "water";
     return "water";
+  }
+
+  _canWaterLink(a, b) {
+    if (a.net !== "water" || b.net !== "water") return false;
+    if (a.dim !== b.dim) return false;
+    if (a.broken || b.broken) return false;
+    if (!a.online || !b.online) return false;
+    const ta = a.tier != null ? a.tier : 5;
+    const tb = b.tier != null ? b.tier : 5;
+    if (Math.abs(ta - tb) > 1) {
+      const relay = (t) => t === "water_main" || t === "branch_pipe" || t === "pipe_junction";
+      if (!(relay(a.type) || relay(b.type))) return false;
+      if (Math.abs(ta - tb) > 2) return false;
+    }
+    return dist(a, b) <= waterTierRange(ta, tb);
   }
 
   /** Can power flow between two power nodes? */
@@ -239,7 +320,10 @@ export class UtilityManager {
           powered.add(n.key); queue.push(n);
         }
       } else {
-        if ((n.type === "water_plant" || n.type === "water_tower") && (n.waterLevel || 0) > 0) {
+        if (
+          (n.type === "reservoir" || n.type === "water_plant" || n.type === "well_pump" || n.type === "water_tower") &&
+          (n.waterLevel || 0) > 0
+        ) {
           powered.add(n.key); queue.push(n);
         }
       }
@@ -253,16 +337,19 @@ export class UtilityManager {
         if (nb.broken || !nb.online) continue;
         if (net === "power") {
           if (!this._canPowerLink(cur, nb)) continue;
-          // circuit breaker open = stop downstream endpoints
           if (cur.type === "circuit_breaker" && cur.switchOn === false) continue;
           if (nb.type === "circuit_breaker" && nb.switchOn === false) {
-            // breaker itself can be powered but not pass through — mark powered only
             powered.add(nb.key);
             continue;
           }
         } else {
-          const range = this.settings.waterRange || 20;
-          if (dist(cur, nb) > range) continue;
+          if (!this._canWaterLink(cur, nb)) continue;
+          // closed shutoff stops downstream fixtures
+          if (cur.type === "shutoff_valve" && cur.valveOpen === false) continue;
+          if (nb.type === "shutoff_valve" && nb.valveOpen === false) {
+            powered.add(nb.key);
+            continue;
+          }
         }
         powered.add(nb.key);
         queue.push(nb);
@@ -301,14 +388,28 @@ export class UtilityManager {
     if (!n) return { ok: false, error: "Unknown" };
     if (n.type === "light_switch" || n.type === "circuit_breaker") {
       n.switchOn = !n.switchOn;
-      // circuit_breaker uses switchOn as closed(true)/open(false)
-      if (n.type === "circuit_breaker") {
-        n.online = true; // stay registered
-      }
+      if (n.type === "circuit_breaker") n.online = true;
       this.save();
       return { ok: true, switchOn: n.switchOn, type: n.type };
     }
     return { ok: false, error: "Not a switch/breaker" };
+  }
+
+  toggleValve(key) {
+    const n = this.nodes.get(key);
+    if (!n || n.type !== "shutoff_valve") return { ok: false, error: "Not a shutoff valve" };
+    n.valveOpen = !n.valveOpen;
+    this.save();
+    return { ok: true, valveOpen: n.valveOpen };
+  }
+
+  describeWaterPath(nodeKey) {
+    const st = this.status("water");
+    const n = this.nodes.get(nodeKey);
+    if (!n) return "Unknown";
+    const live = st.powered.has(nodeKey);
+    const tierName = ["SOURCE","MAIN","NEIGHBORHOOD","BUILDING","BRANCH","FIXTURE"][n.tier ?? 5] || "?";
+    return `${tierName} · ${live ? "PRESSURE" : "DRY"} · supply ${st.gen} demand ${st.load}`;
   }
 
   /** Trace path labels for UI */
@@ -330,7 +431,7 @@ export class UtilityManager {
       if (!n) continue;
       if (net === "power" && (n.type === "generator_diesel" || n.type === "generator_solar" || n.type === "generator_large"))
         gen += n.generation || POWER_GEN[n.type] || 0;
-      if (net === "water" && (n.type === "water_plant" || n.type === "water_tower"))
+      if (net === "water" && WATER_GEN[n.type])
         gen += n.generation || WATER_GEN[n.type] || 0;
       load += n.load || 0;
       if (n.type === "electric_meter" || n.type === "water_meter") load += 6;
@@ -350,7 +451,7 @@ export class UtilityManager {
 
   refillWater(key, amount = 40) {
     const n = this.nodes.get(key);
-    if (!n || (n.type !== "water_plant" && n.type !== "water_tower"))
+    if (!n || !WATER_GEN[n.type])
       return { ok: false, error: "Not a water source" };
     n.waterLevel = Math.min(100, (n.waterLevel || 0) + amount);
     n.online = true; n.broken = false;
@@ -398,8 +499,23 @@ export class UtilityManager {
         return { ok: true, message: "Outlet live", kwh: n.kwh };
       }
     } else {
-      n.liters = round2((n.liters || 0) + (n.type === "shower" ? 15 : n.type === "toilet" ? 6 : 3));
-      return { ok: true, message: `${n.type} used`, liters: n.liters };
+      const use = n.type === "shower" ? 15 : n.type === "toilet" ? 6 : 3;
+      n.liters = round2((n.liters || 0) + use);
+      // hot water if heater supplied on same water graph nearby
+      let hot = false;
+      for (const h of this.nodes.values()) {
+        if (h.type === "water_heater" && st.powered.has(h.key) && h.dim === n.dim && dist(h, n) <= 16) {
+          hot = true;
+          break;
+        }
+      }
+      this.save();
+      return {
+        ok: true,
+        message: `${n.type} used` + (hot ? " (hot)" : " (cold)"),
+        liters: n.liters,
+        hot
+      };
     }
     this.save();
     return { ok: true };
@@ -576,8 +692,9 @@ export class UtilityManager {
           n.fuel = Math.max(0, (n.fuel || 0) - 1);
           if (n.fuel <= 0) n.online = false;
         }
-        if ((n.type === "water_plant" || n.type === "water_tower") && n.online && !n.broken) {
-          n.waterLevel = Math.max(0, (n.waterLevel || 0) - 0.5);
+        if (WATER_GEN[n.type] && n.online && !n.broken) {
+          const drain = n.type === "reservoir" ? 0.2 : 0.5;
+          n.waterLevel = Math.max(0, (n.waterLevel || 0) - drain);
           if (n.waterLevel <= 0) n.online = false;
         }
       }

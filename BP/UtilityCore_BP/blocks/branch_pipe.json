@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:branch_pipe",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.4
+      },
+      "minecraft:map_color": "#466478",
+      "minecraft:geometry": "geometry.utilitycore.branch_pipe",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_branch_pipe",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -2.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          4,
+          4,
+          8
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -2.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          4,
+          4,
+          8
+        ]
+      },
+      "utilitycore:branch_pipe": {}
+    }
+  }
+}

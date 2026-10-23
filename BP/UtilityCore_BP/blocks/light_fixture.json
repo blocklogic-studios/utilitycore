@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:light_fixture",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#DCD2A0",
+      "minecraft:geometry": "geometry.utilitycore.light_fixture",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_light_fixture",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -4.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          8,
+          4,
+          8
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -4.0,
+          0,
+          -4.0
+        ],
+        "size": [
+          8,
+          4,
+          8
+        ]
+      },
+      "utilitycore:light_fixture": {}
+    }
+  }
+}

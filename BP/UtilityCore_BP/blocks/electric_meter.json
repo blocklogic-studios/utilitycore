@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:electric_meter",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#286E46",
+      "minecraft:geometry": "geometry.utilitycore.electric_meter",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_electric_meter",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -4.0,
+          0,
+          -3.0
+        ],
+        "size": [
+          8,
+          10,
+          6
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -4.0,
+          0,
+          -3.0
+        ],
+        "size": [
+          8,
+          10,
+          6
+        ]
+      },
+      "utilitycore:electric_meter": {}
+    }
+  }
+}

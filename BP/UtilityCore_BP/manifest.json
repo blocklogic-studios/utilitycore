@@ -1,0 +1,58 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "UtilityCore Behavior",
+    "description": "Power + water grids, home fixtures, utility bills, government ID, insurance.",
+    "uuid": "be89bf32-9c00-4889-ab8b-0ae52522b318",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      26,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "9bf81f89-9b09-41a6-805e-28367b3786f9",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "2e2ad4d8-237d-4e4b-a38c-58b79d1dd98f",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "be2e872b-b501-4a41-9dd5-aa48e2d7f66b",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.6.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    }
+  ]
+}

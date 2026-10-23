@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:water_plant",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#326478",
+      "minecraft:geometry": "geometry.utilitycore.water_plant",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_water_plant",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -8.0,
+          0,
+          -8.0
+        ],
+        "size": [
+          16,
+          16,
+          16
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -8.0,
+          0,
+          -8.0
+        ],
+        "size": [
+          16,
+          16,
+          16
+        ]
+      },
+      "utilitycore:water_plant": {}
+    }
+  }
+}

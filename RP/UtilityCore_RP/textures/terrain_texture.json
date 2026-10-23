@@ -1,0 +1,60 @@
+{
+  "resource_pack_name": "utilitycore",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "utilitycore_generator_diesel": {
+      "textures": "textures/blocks/generator_diesel"
+    },
+    "utilitycore_generator_solar": {
+      "textures": "textures/blocks/generator_solar"
+    },
+    "utilitycore_power_pole": {
+      "textures": "textures/blocks/power_pole"
+    },
+    "utilitycore_transformer": {
+      "textures": "textures/blocks/transformer"
+    },
+    "utilitycore_breaker_panel": {
+      "textures": "textures/blocks/breaker_panel"
+    },
+    "utilitycore_electric_meter": {
+      "textures": "textures/blocks/electric_meter"
+    },
+    "utilitycore_outlet": {
+      "textures": "textures/blocks/outlet"
+    },
+    "utilitycore_light_fixture": {
+      "textures": "textures/blocks/light_fixture"
+    },
+    "utilitycore_water_plant": {
+      "textures": "textures/blocks/water_plant"
+    },
+    "utilitycore_water_tower": {
+      "textures": "textures/blocks/water_tower"
+    },
+    "utilitycore_pipe_junction": {
+      "textures": "textures/blocks/pipe_junction"
+    },
+    "utilitycore_water_meter": {
+      "textures": "textures/blocks/water_meter"
+    },
+    "utilitycore_sink": {
+      "textures": "textures/blocks/sink"
+    },
+    "utilitycore_toilet": {
+      "textures": "textures/blocks/toilet"
+    },
+    "utilitycore_shower": {
+      "textures": "textures/blocks/shower"
+    },
+    "utilitycore_utility_desk": {
+      "textures": "textures/blocks/utility_desk"
+    },
+    "utilitycore_id_kiosk": {
+      "textures": "textures/blocks/id_kiosk"
+    },
+    "utilitycore_insurance_desk": {
+      "textures": "textures/blocks/insurance_desk"
+    }
+  }
+}

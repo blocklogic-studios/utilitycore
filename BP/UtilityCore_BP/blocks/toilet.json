@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:toilet",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.2
+      },
+      "minecraft:map_color": "#E6E6EB",
+      "minecraft:geometry": "geometry.utilitycore.toilet",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_toilet",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -5.0,
+          0,
+          -6.0
+        ],
+        "size": [
+          10,
+          12,
+          12
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -5.0,
+          0,
+          -6.0
+        ],
+        "size": [
+          10,
+          12,
+          12
+        ]
+      },
+      "utilitycore:toilet": {}
+    }
+  }
+}

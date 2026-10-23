@@ -15,11 +15,80 @@ function round2(n) {
   return Math.round(Number(n) * 100) / 100;
 }
 
-const POWER_GEN = { generator_diesel: 50, generator_solar: 25 };
-const POWER_LOAD = {
-  electric_meter: 2, breaker_panel: 1, outlet: 3, light_fixture: 2,
-  transformer: 1, power_pole: 0
+/** Generation capacity (relative MW) */
+const POWER_GEN = {
+  generator_large: 200,
+  generator_diesel: 50,
+  generator_solar: 25
 };
+
+/** Load when energized */
+const POWER_LOAD = {
+  electric_meter: 2,
+  breaker_panel: 1,
+  circuit_breaker: 1,
+  outlet: 3,
+  light_fixture: 2,
+  light_switch: 0,
+  transformer: 1,
+  substation: 2,
+  neighborhood_room: 2,
+  building_room: 2,
+  power_pole: 0,
+  power_line: 0,
+  conduit: 0
+};
+
+/**
+ * Grid hierarchy tiers (power flows high → low only through allowed links)
+ * 0 gen → 1 HV/distribution → 2 neighborhood → 3 building → 4 circuit → 5 endpoint
+ */
+const POWER_TIER = {
+  generator_large: 0,
+  generator_diesel: 0,
+  generator_solar: 0,
+  substation: 1,
+  power_line: 1,
+  power_pole: 1,
+  transformer: 1,
+  neighborhood_room: 2,
+  building_room: 3,
+  breaker_panel: 3,
+  circuit_breaker: 4,
+  electric_meter: 4,
+  conduit: 5,
+  outlet: 5,
+  light_switch: 5,
+  light_fixture: 5
+};
+
+/** Max link distance by tier pair (blocks) */
+const TIER_RANGE = {
+  // gen to HV
+  "0-1": 48,
+  "0-0": 32,
+  // HV to neighborhood
+  "1-2": 40,
+  "1-1": 36,
+  // neighborhood to building
+  "2-3": 28,
+  "2-2": 24,
+  // building to circuit
+  "3-4": 16,
+  "3-3": 12,
+  // circuit to endpoints / conduit chain
+  "4-5": 12,
+  "4-4": 10,
+  "5-5": 8,
+  // same-tier fallback
+  default: 16
+};
+
+function tierRange(ta, tb) {
+  const a = Math.min(ta, tb), b = Math.max(ta, tb);
+  return TIER_RANGE[`${a}-${b}`] || TIER_RANGE.default;
+}
+
 const WATER_GEN = { water_plant: 80, water_tower: 40 };
 const WATER_LOAD = {
   water_meter: 2, sink: 5, toilet: 8, shower: 12, pipe_junction: 0
@@ -79,14 +148,18 @@ export class UtilityManager {
     const key = keyAt(dim, x, y, z);
     if (this.nodes.has(key)) return this.nodes.get(key);
     const net = this._networkOf(type);
+    const tier = POWER_TIER[type];
     const node = {
       id: `n_${this.next.node++}`,
       key, type, net,
+      tier: tier != null ? tier : null,
       x: Math.floor(x), y: Math.floor(y), z: Math.floor(z), dim,
       owner,
       online: true,
       broken: false,
-      fuel: type === "generator_diesel" ? 100 : 0,
+      switchOn: type === "light_switch" ? true : undefined,
+      linkedLights: type === "light_switch" ? [] : undefined,
+      fuel: (type === "generator_diesel" || type === "generator_large") ? 100 : 0,
       waterLevel: type === "water_tower" ? 80 : (type === "water_plant" ? 100 : 0),
       generation: POWER_GEN[type] || WATER_GEN[type] || 0,
       load: POWER_LOAD[type] || WATER_LOAD[type] || 0,
@@ -101,13 +174,30 @@ export class UtilityManager {
   }
 
   _networkOf(type) {
-    if (POWER_GEN[type] || POWER_LOAD[type] !== undefined ||
-        type === "generator_diesel" || type === "generator_solar" ||
-        type === "power_pole" || type === "transformer" ||
-        type === "breaker_panel" || type === "electric_meter" ||
-        type === "outlet" || type === "light_fixture") return "power";
+    if (POWER_TIER[type] != null || POWER_GEN[type] || POWER_LOAD[type] !== undefined)
+      return "power";
     return "water";
   }
+
+  /** Can power flow between two power nodes? */
+  _canPowerLink(a, b) {
+    if (a.net !== "power" || b.net !== "power") return false;
+    if (a.dim !== b.dim) return false;
+    if (a.broken || b.broken) return false;
+    if (!a.online || !b.online) return false;
+    const ta = a.tier != null ? a.tier : 5;
+    const tb = b.tier != null ? b.tier : 5;
+    // only same tier or adjacent tiers (step by 1), or conduit bridging endpoints
+    if (Math.abs(ta - tb) > 1) {
+      // allow conduit/pole/line as soft bridges within 1 hop of range rules
+      const relay = (t) => t === "conduit" || t === "power_pole" || t === "power_line";
+      if (!(relay(a.type) || relay(b.type))) return false;
+      if (Math.abs(ta - tb) > 2) return false;
+    }
+    const range = tierRange(ta, tb);
+    return dist(a, b) <= range;
+  }
+
 
   deregisterAt(x, y, z, dim) {
     const key = keyAt(dim, x, y, z);
@@ -142,7 +232,7 @@ export class UtilityManager {
     for (const n of this.nodes.values()) {
       if (n.net !== net || n.broken || !n.online) continue;
       if (net === "power") {
-        if (n.type === "generator_diesel" && (n.fuel || 0) > 0) {
+        if ((n.type === "generator_diesel" || n.type === "generator_large") && (n.fuel || 0) > 0) {
           powered.add(n.key); queue.push(n);
         }
         if (n.type === "generator_solar" && (!this.settings.solarDayOnly || day)) {
@@ -157,14 +247,80 @@ export class UtilityManager {
 
     while (queue.length) {
       const cur = queue.shift();
-      for (const nb of this.neighbors(cur, net)) {
-        if (powered.has(nb.key) || nb.broken || !nb.online) continue;
+      for (const nb of this.nodes.values()) {
+        if (nb.key === cur.key || powered.has(nb.key)) continue;
+        if (nb.net !== net || nb.dim !== cur.dim) continue;
+        if (nb.broken || !nb.online) continue;
+        if (net === "power") {
+          if (!this._canPowerLink(cur, nb)) continue;
+          // circuit breaker open = stop downstream endpoints
+          if (cur.type === "circuit_breaker" && cur.switchOn === false) continue;
+          if (nb.type === "circuit_breaker" && nb.switchOn === false) {
+            // breaker itself can be powered but not pass through — mark powered only
+            powered.add(nb.key);
+            continue;
+          }
+        } else {
+          const range = this.settings.waterRange || 20;
+          if (dist(cur, nb) > range) continue;
+        }
         powered.add(nb.key);
         queue.push(nb);
       }
     }
+
+    // Light fixtures need a switch ON on same circuit (nearby breaker branch)
+    if (net === "power") {
+      for (const n of this.nodes.values()) {
+        if (n.type !== "light_fixture" || !powered.has(n.key)) continue;
+        if (!this._lightAllowed(n, powered)) {
+          powered.delete(n.key);
+        }
+      }
+    }
     return powered;
   }
+
+  /**
+   * Light is on only if some powered light_switch within range is switchOn,
+   * or no switch exists nearby (always-on fallback for simple builds).
+   */
+  _lightAllowed(light, powered) {
+    let sawSwitch = false;
+    for (const s of this.nodes.values()) {
+      if (s.type !== "light_switch" || s.dim !== light.dim) continue;
+      if (dist(s, light) > 10) continue;
+      sawSwitch = true;
+      if (s.switchOn && powered.has(s.key) && s.online && !s.broken) return true;
+    }
+    return !sawSwitch; // no switch in range → fixture follows grid only
+  }
+
+  toggleSwitch(key) {
+    const n = this.nodes.get(key);
+    if (!n) return { ok: false, error: "Unknown" };
+    if (n.type === "light_switch" || n.type === "circuit_breaker") {
+      n.switchOn = !n.switchOn;
+      // circuit_breaker uses switchOn as closed(true)/open(false)
+      if (n.type === "circuit_breaker") {
+        n.online = true; // stay registered
+      }
+      this.save();
+      return { ok: true, switchOn: n.switchOn, type: n.type };
+    }
+    return { ok: false, error: "Not a switch/breaker" };
+  }
+
+  /** Trace path labels for UI */
+  describePowerPath(nodeKey) {
+    const st = this.status("power");
+    const n = this.nodes.get(nodeKey);
+    if (!n) return "Unknown";
+    const live = st.powered.has(nodeKey);
+    const tierName = ["GEN","HV","NEIGHBORHOOD","BUILDING","CIRCUIT","ENDPOINT"][n.tier ?? 5] || "?";
+    return `${tierName} · ${live ? "LIVE" : "DEAD"} · gen ${st.gen} load ${st.load}`;
+  }
+
 
   status(net = "power") {
     const powered = this.computePowered(net);
@@ -172,7 +328,7 @@ export class UtilityManager {
     for (const key of powered) {
       const n = this.nodes.get(key);
       if (!n) continue;
-      if (net === "power" && (n.type === "generator_diesel" || n.type === "generator_solar"))
+      if (net === "power" && (n.type === "generator_diesel" || n.type === "generator_solar" || n.type === "generator_large"))
         gen += n.generation || POWER_GEN[n.type] || 0;
       if (net === "water" && (n.type === "water_plant" || n.type === "water_tower"))
         gen += n.generation || WATER_GEN[n.type] || 0;
@@ -185,7 +341,7 @@ export class UtilityManager {
 
   refuelDiesel(key, amount = 50) {
     const n = this.nodes.get(key);
-    if (!n || n.type !== "generator_diesel") return { ok: false, error: "Not a diesel generator" };
+    if (!n || (n.type !== "generator_diesel" && n.type !== "generator_large")) return { ok: false, error: "Not a fueled generator" };
     n.fuel = Math.min(100, (n.fuel || 0) + amount);
     n.online = true; n.broken = false;
     this.save();
@@ -416,7 +572,7 @@ export class UtilityManager {
 
     if (this._tick % 100 === 0) {
       for (const n of this.nodes.values()) {
-        if (n.type === "generator_diesel" && n.online && !n.broken && (n.fuel || 0) > 0) {
+        if ((n.type === "generator_diesel" || n.type === "generator_large") && n.online && !n.broken && (n.fuel || 0) > 0) {
           n.fuel = Math.max(0, (n.fuel || 0) - 1);
           if (n.fuel <= 0) n.online = false;
         }

@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:building_room",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.5
+      },
+      "minecraft:map_color": "#373741",
+      "minecraft:geometry": "geometry.utilitycore.building_room",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_building_room",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -7.0,
+          0,
+          -7.0
+        ],
+        "size": [
+          14,
+          14,
+          14
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -7.0,
+          0,
+          -7.0
+        ],
+        "size": [
+          14,
+          14,
+          14
+        ]
+      },
+      "utilitycore:building_room": {}
+    }
+  }
+}

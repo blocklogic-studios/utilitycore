@@ -35,7 +35,15 @@
               "utilitycore:id_card",
               "utilitycore:insurance_policy",
               "utilitycore:utility_bill",
-              "utilitycore:tablet"
+              "utilitycore:tablet",
+              "utilitycore:generator_large",
+              "utilitycore:substation",
+              "utilitycore:power_line",
+              "utilitycore:conduit",
+              "utilitycore:neighborhood_room",
+              "utilitycore:building_room",
+              "utilitycore:circuit_breaker",
+              "utilitycore:light_switch"
             ]
           }
         ]

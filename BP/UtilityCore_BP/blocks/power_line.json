@@ -1,0 +1,51 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "utilitycore:power_line",
+      "menu_category": {
+        "category": "construction",
+        "group": "utilitycore:itemGroup.name.utility",
+        "is_hidden_in_commands": false
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.5
+      },
+      "minecraft:map_color": "#1E1E1E",
+      "minecraft:geometry": "geometry.utilitycore.power_line",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "utilitycore_power_line",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:collision_box": {
+        "origin": [
+          -2.0,
+          0,
+          -2.0
+        ],
+        "size": [
+          4,
+          20,
+          4
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -2.0,
+          0,
+          -2.0
+        ],
+        "size": [
+          4,
+          20,
+          4
+        ]
+      },
+      "utilitycore:power_line": {}
+    }
+  }
+}

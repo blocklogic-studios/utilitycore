@@ -31,7 +31,8 @@ const BLOCK_TYPES = {
   "utilitycore:shower": "shower",
   "utilitycore:utility_desk": "utility_desk",
   "utilitycore:id_kiosk": "id_kiosk",
-  "utilitycore:insurance_desk": "insurance_desk"
+  "utilitycore:insurance_desk": "insurance_desk",
+  "utilitycore:generator_large": "generator_large"
 };
 
 export function setupUIHandlers(util) {
@@ -262,11 +263,14 @@ function showNode(player, util, node) {
     `§7Supplied: ${powered ? "§aYES" : "§cNO"}\n` +
     `§7Online: ${node.online ? "§aON" : "§cOFF"}` +
     (node.broken ? " §cTRIPPED" : "");
-  if (node.type === "generator_diesel") body += `\n§7Fuel: §f${node.fuel || 0}%`;
+  if (node.type === "generator_diesel" || node.type === "generator_large") body += `\n§7Fuel: §f${node.fuel || 0}%`;
   if (node.type === "water_plant" || node.type === "water_tower")
     body += `\n§7Level: §f${Math.round(node.waterLevel || 0)}%`;
   if (node.type === "electric_meter") body += `\n§7kWh: §f${(node.kwh || 0).toFixed(2)}`;
   if (node.type === "water_meter") body += `\n§7L: §f${(node.liters || 0).toFixed(1)}`;
+  if (node.net === "power" && util.describePowerPath) {
+    body += `\n§8${util.describePowerPath(node.key)}`;
+  }
 
   const form = new ActionFormData().title("Equipment").body(body);
 
@@ -289,7 +293,7 @@ function showNode(player, util, node) {
     return;
   }
 
-  if (node.type === "generator_diesel") {
+  if (node.type === "generator_diesel" || node.type === "generator_large") {
     form.button("Refuel +50");
     form.button("Toggle");
     form.button("Close");
@@ -339,6 +343,22 @@ function showNode(player, util, node) {
         const r = util.toggleNode(node.key);
         player.sendMessage(r.online ? "§aOn" : "§eOff");
       }
+    });
+    return;
+  }
+
+  
+  if (node.type === "light_switch" || node.type === "circuit_breaker") {
+    const state = node.switchOn !== false ? "CLOSED/ON" : "OPEN/OFF";
+    form.body(body + "\n§7State: §f" + state);
+    form.button(node.switchOn !== false ? "Turn OFF / open" : "Turn ON / close");
+    form.button("Close");
+    form.show(player).then((res) => {
+      if (res.canceled || res.selection === 1) return;
+      const r = util.toggleSwitch(node.key);
+      player.sendMessage(r.ok
+        ? (r.switchOn ? "§aON / closed" : "§eOFF / open")
+        : `§c${r.error}`);
     });
     return;
   }

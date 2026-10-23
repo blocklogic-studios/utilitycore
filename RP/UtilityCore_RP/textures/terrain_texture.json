@@ -55,6 +55,30 @@
     },
     "utilitycore_insurance_desk": {
       "textures": "textures/blocks/insurance_desk"
+    },
+    "utilitycore_generator_large": {
+      "textures": "textures/blocks/generator_large"
+    },
+    "utilitycore_substation": {
+      "textures": "textures/blocks/substation"
+    },
+    "utilitycore_power_line": {
+      "textures": "textures/blocks/power_line"
+    },
+    "utilitycore_conduit": {
+      "textures": "textures/blocks/conduit"
+    },
+    "utilitycore_neighborhood_room": {
+      "textures": "textures/blocks/neighborhood_room"
+    },
+    "utilitycore_building_room": {
+      "textures": "textures/blocks/building_room"
+    },
+    "utilitycore_circuit_breaker": {
+      "textures": "textures/blocks/circuit_breaker"
+    },
+    "utilitycore_light_switch": {
+      "textures": "textures/blocks/light_switch"
     }
   }
 }

@@ -4,6 +4,19 @@ One pack for **power**, **water**, **home fixtures**, **utility bills**, **gover
 
 Bedrock **1.26+** · Beta APIs required.
 
+## Features (v1.1.0)
+
+### Hierarchical power
+```
+Large/Diesel/Solar gen
+  → HV lines / poles / substation
+    → Neighborhood power room
+      → Building power room / panel
+        → Circuit breaker
+          → Conduit / outlets / light switches
+            → Light fixtures (need switch ON nearby)
+```
+
 ## Features (v1.0.0)
 
 ### Power

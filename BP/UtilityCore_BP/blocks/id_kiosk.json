@@ -10,41 +10,17 @@
       }
     },
     "components": {
-      "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.0
-      },
-      "minecraft:map_color": "#4A90D9",
-      "minecraft:geometry": "geometry.utilitycore.id_kiosk",
+      "minecraft:unit_cube": {},
       "minecraft:material_instances": {
         "*": {
           "texture": "utilitycore_id_kiosk",
           "render_method": "opaque"
         }
       },
-      "minecraft:collision_box": {
-        "origin": [
-          -8,
-          0,
-          -8
-        ],
-        "size": [
-          16,
-          16,
-          16
-        ]
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:selection_box": {
-        "origin": [
-          -8,
-          0,
-          -8
-        ],
-        "size": [
-          16,
-          16,
-          16
-        ]
-      },
+      "minecraft:map_color": "#4A90D9",
       "utilitycore:id_kiosk": {}
     }
   }

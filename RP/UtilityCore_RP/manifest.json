@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "UtilityCore Resources",
-    "description": "UtilityCore RP v1.5.0",
-    "uuid": "5bb56235-bf88-42dd-98da-19fea18319fd",
+    "description": "v1.6.0",
+    "uuid": "f882fa21-d8e8-4578-a9b9-e87906748a94",
     "version": [
       1,
-      5,
+      6,
       0
     ],
     "min_engine_version": [
@@ -18,10 +18,10 @@
   "modules": [
     {
       "type": "resources",
-      "uuid": "37d19eb1-74b1-4d5f-b789-ccd31f079be6",
+      "uuid": "0c7e77f8-d0ab-40b4-b25b-1a6bf6402e6e",
       "version": [
         1,
-        5,
+        6,
         0
       ]
     }

@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "UtilityCore Behavior",
-    "description": "Power, water, home utilities. v1.5.0",
-    "uuid": "2116e9bc-a940-4d97-8cdf-ae8a79fe8318",
+    "description": "v1.6.0 unit_cube blocks",
+    "uuid": "efbe2b96-bddc-46b6-8c7a-6e901db06323",
     "version": [
       1,
-      5,
+      6,
       0
     ],
     "min_engine_version": [
@@ -18,20 +18,20 @@
   "modules": [
     {
       "type": "data",
-      "uuid": "71e8b859-cd93-4041-982a-8d3c6ccc65f2",
+      "uuid": "d26b8ca7-0737-45ba-99dd-0c6b32d1ecbb",
       "version": [
         1,
-        5,
+        6,
         0
       ]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "979f6033-3bbf-45f3-9e18-4ee1056680b8",
+      "uuid": "c2149f07-5189-4ff8-bd8d-877ba885f5ac",
       "version": [
         1,
-        5,
+        6,
         0
       ],
       "entry": "scripts/main.js"
@@ -39,10 +39,10 @@
   ],
   "dependencies": [
     {
-      "uuid": "5bb56235-bf88-42dd-98da-19fea18319fd",
+      "uuid": "f882fa21-d8e8-4578-a9b9-e87906748a94",
       "version": [
         1,
-        5,
+        6,
         0
       ]
     },

@@ -7,7 +7,7 @@
         "groups": [
           {
             "group_identifier": {
-              "icon": "utilitycore:outlet",
+              "icon": "utilitycore:generator_diesel",
               "name": "utilitycore:itemGroup.name.utility"
             },
             "items": [
@@ -73,33 +73,33 @@
               "name": "utilitycore:itemGroup.name.devices"
             },
             "items": [
-              "utilitycore:tablet",
-              "utilitycore:id_card",
-              "utilitycore:multimeter",
-              "utilitycore:fuse",
-              "utilitycore:wrench",
-              "utilitycore:insurance_policy",
-              "utilitycore:utility_bill",
+              "utilitycore:blender",
+              "utilitycore:box_fan",
+              "utilitycore:clock_radio",
+              "utilitycore:coffee_maker",
               "utilitycore:desk_lamp",
               "utilitycore:floor_lamp",
-              "utilitycore:phone_charger",
-              "utilitycore:laptop_charger",
-              "utilitycore:toaster",
-              "utilitycore:coffee_maker",
-              "utilitycore:kettle",
-              "utilitycore:blender",
-              "utilitycore:hair_dryer",
-              "utilitycore:vacuum",
-              "utilitycore:space_heater",
-              "utilitycore:box_fan",
+              "utilitycore:fuse",
               "utilitycore:game_console",
-              "utilitycore:radio",
-              "utilitycore:clock_radio",
-              "utilitycore:monitor",
-              "utilitycore:printer",
+              "utilitycore:hair_dryer",
+              "utilitycore:id_card",
+              "utilitycore:insurance_policy",
+              "utilitycore:kettle",
+              "utilitycore:laptop_charger",
               "utilitycore:modem",
+              "utilitycore:monitor",
+              "utilitycore:multimeter",
+              "utilitycore:phone_charger",
               "utilitycore:power_strip",
-              "utilitycore:string_lights"
+              "utilitycore:printer",
+              "utilitycore:radio",
+              "utilitycore:space_heater",
+              "utilitycore:string_lights",
+              "utilitycore:tablet",
+              "utilitycore:toaster",
+              "utilitycore:utility_bill",
+              "utilitycore:vacuum",
+              "utilitycore:wrench"
             ]
           }
         ]

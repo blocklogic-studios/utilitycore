@@ -13,7 +13,7 @@
       "minecraft:destructible_by_mining": {
         "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#6688AA",
+      "minecraft:map_color": "#4A90D9",
       "minecraft:geometry": "geometry.utilitycore.branch_pipe",
       "minecraft:material_instances": {
         "*": {
@@ -23,26 +23,26 @@
       },
       "minecraft:collision_box": {
         "origin": [
-          -3.0,
+          -8,
           0,
-          -3.0
+          -8
         ],
         "size": [
-          6,
-          4,
-          6
+          16,
+          16,
+          16
         ]
       },
       "minecraft:selection_box": {
         "origin": [
-          -3.0,
+          -8,
           0,
-          -3.0
+          -8
         ],
         "size": [
-          6,
-          4,
-          6
+          16,
+          16,
+          16
         ]
       },
       "utilitycore:branch_pipe": {}

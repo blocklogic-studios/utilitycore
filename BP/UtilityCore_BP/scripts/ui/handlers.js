@@ -98,10 +98,30 @@ export function setupUIHandlers(util) {
   });
 
   world.afterEvents.playerInteractWithBlock.subscribe((ev) => {
+    const player = ev.player;
+    if (!player) return;
+
+    // Held utility tools work even when clicking blocks
+    try {
+      const slot = player.selectedSlotIndex ?? player.selectedSlot ?? 0;
+      const held = player.getComponent("inventory")?.container?.getItem(slot);
+      if (held) {
+        if (held.typeId === "utilitycore:tablet" || held.typeId === "utilitycore:multimeter") {
+          try { ev.cancel = true; } catch (e) {}
+          return nextForm(() => showTablet(player, util));
+        }
+        if (held.typeId === "utilitycore:id_card") {
+          try { ev.cancel = true; } catch (e) {}
+          const card = util.getId(player.name);
+          player.sendMessage(card ? `§bID ${card.id} §f${card.fullName}` : "§7No ID on file — use ID Kiosk");
+          return;
+        }
+      }
+    } catch (e) {}
+
     const type = BLOCK_TYPES[ev.block?.typeId];
     if (!type) return;
     try { ev.cancel = true; } catch (e) {}
-    const player = ev.player;
     const dim = ev.block.dimension.id;
     const b = ev.block;
     if (type === "utility_desk") return nextForm(() => showDesk(player, util));

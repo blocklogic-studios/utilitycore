@@ -5,16 +5,13 @@
       "identifier": "utilitycore:coffee_maker",
       "menu_category": {
         "category": "equipment",
-        "group": "utilitycore:itemGroup.name.utility",
+        "group": "utilitycore:itemGroup.name.devices",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 1,
-      "minecraft:icon": "utilitycore_coffee_maker",
-      "minecraft:display_name": {
-        "value": "Coffee Maker"
-      }
+      "minecraft:icon": "utilitycore_coffee_maker"
     }
   }
 }

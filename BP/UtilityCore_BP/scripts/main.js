@@ -22,20 +22,45 @@ const COMPONENTS = [
   "utilitycore:utility_desk", "utilitycore:id_kiosk", "utilitycore:insurance_desk"
 ];
 
+let ready = false;
+
+function boot() {
+  if (ready) return;
+  ready = true;
+  try {
+    util.load();
+  } catch (e) {
+    console.warn("[UtilityCore] load", e);
+  }
+  try {
+    setupUIHandlers(util);
+  } catch (e) {
+    console.warn("[UtilityCore] handlers", e);
+  }
+  console.log("[UtilityCore] Boot complete");
+}
+
 system.beforeEvents.startup.subscribe((event) => {
   const reg = event.blockComponentRegistry;
   for (const id of COMPONENTS) {
-    try { reg.registerCustomComponent(id, { onPlayerInteract() {} }); }
-    catch (e) { console.warn("[UtilityCore] component", id, e); }
+    try {
+      reg.registerCustomComponent(id, { onPlayerInteract() {} });
+    } catch (e) {}
   }
-  console.log(`[UtilityCore] ${COMPONENTS.length} components registered`);
+  console.log("[UtilityCore] Components OK");
 });
 
 world.afterEvents.worldLoad.subscribe(() => {
-  util.load();
-  setupUIHandlers(util);
-  console.log("[UtilityCore] Ready");
+  boot();
 });
 
-system.runInterval(() => { util.tick(); }, 20);
-console.log("[UtilityCore] Script started");
+// Fallback if worldLoad already fired
+system.runTimeout(() => {
+  boot();
+}, 20);
+
+system.runInterval(() => {
+  try { util.tick(); } catch (e) {}
+}, 20);
+
+console.log("[UtilityCore] Script module loaded");

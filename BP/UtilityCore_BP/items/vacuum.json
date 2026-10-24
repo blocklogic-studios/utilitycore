@@ -5,16 +5,13 @@
       "identifier": "utilitycore:vacuum",
       "menu_category": {
         "category": "equipment",
-        "group": "utilitycore:itemGroup.name.utility",
+        "group": "utilitycore:itemGroup.name.devices",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 1,
-      "minecraft:icon": "utilitycore_vacuum",
-      "minecraft:display_name": {
-        "value": "Vacuum Cleaner"
-      }
+      "minecraft:icon": "utilitycore_vacuum"
     }
   }
 }

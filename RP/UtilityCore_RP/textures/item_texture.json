@@ -2,6 +2,12 @@
   "resource_pack_name": "utilitycore",
   "texture_name": "atlas.items",
   "texture_data": {
+    "utilitycore_tablet": {
+      "textures": "textures/items/tablet"
+    },
+    "utilitycore_id_card": {
+      "textures": "textures/items/id_card"
+    },
     "utilitycore_multimeter": {
       "textures": "textures/items/multimeter"
     },
@@ -11,17 +17,11 @@
     "utilitycore_wrench": {
       "textures": "textures/items/wrench"
     },
-    "utilitycore_id_card": {
-      "textures": "textures/items/id_card"
-    },
     "utilitycore_insurance_policy": {
       "textures": "textures/items/insurance_policy"
     },
     "utilitycore_utility_bill": {
       "textures": "textures/items/utility_bill"
-    },
-    "utilitycore_tablet": {
-      "textures": "textures/items/tablet"
     },
     "utilitycore_desk_lamp": {
       "textures": "textures/items/desk_lamp"

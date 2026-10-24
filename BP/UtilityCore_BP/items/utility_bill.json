@@ -5,16 +5,13 @@
       "identifier": "utilitycore:utility_bill",
       "menu_category": {
         "category": "items",
-        "group": "utilitycore:itemGroup.name.utility",
+        "group": "utilitycore:itemGroup.name.devices",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 16,
-      "minecraft:icon": "utilitycore_utility_bill",
-      "minecraft:display_name": {
-        "value": "Utility Bill"
-      }
+      "minecraft:icon": "utilitycore_utility_bill"
     }
   }
 }

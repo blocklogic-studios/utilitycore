@@ -5,16 +5,13 @@
       "identifier": "utilitycore:id_card",
       "menu_category": {
         "category": "equipment",
-        "group": "utilitycore:itemGroup.name.utility",
+        "group": "utilitycore:itemGroup.name.devices",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 1,
-      "minecraft:icon": "utilitycore_id_card",
-      "minecraft:display_name": {
-        "value": "Government ID"
-      }
+      "minecraft:icon": "utilitycore_id_card"
     }
   }
 }

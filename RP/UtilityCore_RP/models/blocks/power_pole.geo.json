@@ -6,11 +6,11 @@
         "identifier": "geometry.utilitycore.power_pole",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 2,
-        "visible_bounds_height": 2.5,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
         "visible_bounds_offset": [
           0,
-          1.0,
+          1.5,
           0
         ]
       },

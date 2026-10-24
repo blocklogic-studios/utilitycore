@@ -6,11 +6,11 @@
         "identifier": "geometry.utilitycore.substation",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 2,
-        "visible_bounds_height": 2.5,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3,
         "visible_bounds_offset": [
           0,
-          1.0,
+          1.5,
           0
         ]
       },
@@ -25,14 +25,14 @@
           "cubes": [
             {
               "origin": [
-                -7.0,
+                -8.0,
                 0,
-                -7.0
+                -8.0
               ],
               "size": [
-                14,
-                14,
-                14
+                16,
+                16,
+                16
               ],
               "uv": [
                 0,

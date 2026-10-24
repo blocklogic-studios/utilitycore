@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "UtilityCore Behavior",
-    "description": "Power, water, home, outlets, bills, ID, insurance. v1.4.0",
-    "uuid": "674634b5-aa3c-4958-87d2-07da5f66b993",
+    "description": "Power, water, home utilities. v1.5.0",
+    "uuid": "2116e9bc-a940-4d97-8cdf-ae8a79fe8318",
     "version": [
       1,
-      4,
+      5,
       0
     ],
     "min_engine_version": [
@@ -18,20 +18,20 @@
   "modules": [
     {
       "type": "data",
-      "uuid": "c6deb2b0-b29e-4b2b-9fea-7432adb367b4",
+      "uuid": "71e8b859-cd93-4041-982a-8d3c6ccc65f2",
       "version": [
         1,
-        4,
+        5,
         0
       ]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "0c73c50a-38ff-48c8-882d-0b2e6072f354",
+      "uuid": "979f6033-3bbf-45f3-9e18-4ee1056680b8",
       "version": [
         1,
-        4,
+        5,
         0
       ],
       "entry": "scripts/main.js"
@@ -39,10 +39,10 @@
   ],
   "dependencies": [
     {
-      "uuid": "df5073e5-731e-47a1-b961-a8146719f0e7",
+      "uuid": "5bb56235-bf88-42dd-98da-19fea18319fd",
       "version": [
         1,
-        4,
+        5,
         0
       ]
     },

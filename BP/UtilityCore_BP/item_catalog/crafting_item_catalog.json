@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.30",
+  "format_version": "1.26.0",
   "minecraft:crafting_items_catalog": {
     "categories": [
       {
@@ -7,8 +7,8 @@
         "groups": [
           {
             "group_identifier": {
-              "name": "utilitycore:itemGroup.name.utility",
-              "icon": "utilitycore:outlet"
+              "icon": "utilitycore:outlet",
+              "name": "utilitycore:itemGroup.name.utility"
             },
             "items": [
               "utilitycore:ac_unit",
@@ -55,7 +55,11 @@
               "utilitycore:water_meter",
               "utilitycore:water_plant",
               "utilitycore:water_tower",
-              "utilitycore:well_pump"
+              "utilitycore:well_pump",
+              "utilitycore:tablet",
+              "utilitycore:id_card",
+              "utilitycore:multimeter",
+              "utilitycore:fuse"
             ]
           }
         ]
@@ -65,37 +69,37 @@
         "groups": [
           {
             "group_identifier": {
-              "name": "utilitycore:itemGroup.name.utility",
-              "icon": "utilitycore:tablet"
+              "icon": "utilitycore:tablet",
+              "name": "utilitycore:itemGroup.name.devices"
             },
             "items": [
-              "utilitycore:blender",
-              "utilitycore:box_fan",
-              "utilitycore:clock_radio",
-              "utilitycore:coffee_maker",
+              "utilitycore:tablet",
+              "utilitycore:id_card",
+              "utilitycore:multimeter",
+              "utilitycore:fuse",
+              "utilitycore:wrench",
+              "utilitycore:insurance_policy",
+              "utilitycore:utility_bill",
               "utilitycore:desk_lamp",
               "utilitycore:floor_lamp",
-              "utilitycore:fuse",
-              "utilitycore:game_console",
-              "utilitycore:hair_dryer",
-              "utilitycore:id_card",
-              "utilitycore:insurance_policy",
-              "utilitycore:kettle",
-              "utilitycore:laptop_charger",
-              "utilitycore:modem",
-              "utilitycore:monitor",
-              "utilitycore:multimeter",
               "utilitycore:phone_charger",
-              "utilitycore:power_strip",
-              "utilitycore:printer",
-              "utilitycore:radio",
-              "utilitycore:space_heater",
-              "utilitycore:string_lights",
-              "utilitycore:tablet",
+              "utilitycore:laptop_charger",
               "utilitycore:toaster",
-              "utilitycore:utility_bill",
+              "utilitycore:coffee_maker",
+              "utilitycore:kettle",
+              "utilitycore:blender",
+              "utilitycore:hair_dryer",
               "utilitycore:vacuum",
-              "utilitycore:wrench"
+              "utilitycore:space_heater",
+              "utilitycore:box_fan",
+              "utilitycore:game_console",
+              "utilitycore:radio",
+              "utilitycore:clock_radio",
+              "utilitycore:monitor",
+              "utilitycore:printer",
+              "utilitycore:modem",
+              "utilitycore:power_strip",
+              "utilitycore:string_lights"
             ]
           }
         ]

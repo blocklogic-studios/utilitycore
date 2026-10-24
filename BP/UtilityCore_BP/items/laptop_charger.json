@@ -5,16 +5,13 @@
       "identifier": "utilitycore:laptop_charger",
       "menu_category": {
         "category": "equipment",
-        "group": "utilitycore:itemGroup.name.utility",
+        "group": "utilitycore:itemGroup.name.devices",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 1,
-      "minecraft:icon": "utilitycore_laptop_charger",
-      "minecraft:display_name": {
-        "value": "Laptop Charger"
-      }
+      "minecraft:icon": "utilitycore_laptop_charger"
     }
   }
 }

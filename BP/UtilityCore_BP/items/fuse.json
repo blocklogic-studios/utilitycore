@@ -4,14 +4,17 @@
     "description": {
       "identifier": "utilitycore:fuse",
       "menu_category": {
-        "category": "equipment",
+        "category": "items",
         "group": "utilitycore:itemGroup.name.utility",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 16,
-      "minecraft:icon": "utilitycore_fuse"
+      "minecraft:icon": "utilitycore_fuse",
+      "minecraft:display_name": {
+        "value": "Fuse"
+      }
     }
   }
 }

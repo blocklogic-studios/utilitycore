@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.2
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#B4BEC8",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.sink",
       "minecraft:material_instances": {
         "*": {
@@ -23,26 +23,26 @@
       },
       "minecraft:collision_box": {
         "origin": [
-          -6.0,
+          -7.0,
           0,
-          -5.0
+          -7.0
         ],
         "size": [
-          12,
-          10,
-          10
+          14,
+          14,
+          14
         ]
       },
       "minecraft:selection_box": {
         "origin": [
-          -6.0,
+          -7.0,
           0,
-          -5.0
+          -7.0
         ],
         "size": [
-          12,
-          10,
-          10
+          14,
+          14,
+          14
         ]
       },
       "utilitycore:sink": {}

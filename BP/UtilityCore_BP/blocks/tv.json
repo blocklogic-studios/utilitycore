@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.2
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#141419",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.tv",
       "minecraft:material_instances": {
         "*": {
@@ -25,24 +25,24 @@
         "origin": [
           -7.0,
           0,
-          -2.0
+          -7.0
         ],
         "size": [
           14,
-          10,
-          4
+          14,
+          14
         ]
       },
       "minecraft:selection_box": {
         "origin": [
           -7.0,
           0,
-          -2.0
+          -7.0
         ],
         "size": [
           14,
-          10,
-          4
+          14,
+          14
         ]
       },
       "utilitycore:tv": {}

@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.2
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#5A4632",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.furnace",
       "minecraft:material_instances": {
         "*": {
@@ -29,7 +29,7 @@
         ],
         "size": [
           14,
-          18,
+          14,
           14
         ]
       },
@@ -41,7 +41,7 @@
         ],
         "size": [
           14,
-          18,
+          14,
           14
         ]
       },

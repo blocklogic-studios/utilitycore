@@ -11,7 +11,10 @@
     },
     "components": {
       "minecraft:max_stack_size": 16,
-      "minecraft:icon": "utilitycore_insurance_policy"
+      "minecraft:icon": "utilitycore_insurance_policy",
+      "minecraft:display_name": {
+        "value": "Insurance Policy"
+      }
     }
   }
 }

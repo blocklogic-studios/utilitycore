@@ -6,11 +6,11 @@
         "identifier": "geometry.utilitycore.reservoir",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 3,
-        "visible_bounds_height": 3,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
-          1,
+          1.0,
           0
         ]
       },
@@ -25,14 +25,14 @@
           "cubes": [
             {
               "origin": [
-                -8.0,
+                -7.0,
                 0,
-                -8.0
+                -7.0
               ],
               "size": [
-                16,
-                12,
-                16
+                14,
+                14,
+                14
               ],
               "uv": [
                 0,

@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.4
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#374B5F",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.plumbing_room",
       "minecraft:material_instances": {
         "*": {

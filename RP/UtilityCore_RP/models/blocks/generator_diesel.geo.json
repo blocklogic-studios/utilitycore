@@ -10,7 +10,7 @@
         "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
-          0.75,
+          1.0,
           0
         ]
       },
@@ -25,14 +25,14 @@
           "cubes": [
             {
               "origin": [
-                -8.0,
+                -7.0,
                 0,
-                -8.0
+                -7.0
               ],
               "size": [
-                16,
                 14,
-                16
+                14,
+                14
               ],
               "uv": [
                 0,

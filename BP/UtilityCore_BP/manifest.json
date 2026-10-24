@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "UtilityCore Behavior",
-    "description": "Power + water grids, home fixtures, utility bills, government ID, insurance. Hierarchical grid v1.1.",
-    "uuid": "be89bf32-9c00-4889-ab8b-0ae52522b318",
+    "description": "Power, water, home, outlets, bills, ID, insurance. v1.4.0",
+    "uuid": "674634b5-aa3c-4958-87d2-07da5f66b993",
     "version": [
       1,
-      3,
+      4,
       0
     ],
     "min_engine_version": [
@@ -18,20 +18,20 @@
   "modules": [
     {
       "type": "data",
-      "uuid": "9bf81f89-9b09-41a6-805e-28367b3786f9",
+      "uuid": "c6deb2b0-b29e-4b2b-9fea-7432adb367b4",
       "version": [
         1,
-        3,
+        4,
         0
       ]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "2e2ad4d8-237d-4e4b-a38c-58b79d1dd98f",
+      "uuid": "0c73c50a-38ff-48c8-882d-0b2e6072f354",
       "version": [
         1,
-        3,
+        4,
         0
       ],
       "entry": "scripts/main.js"
@@ -39,10 +39,10 @@
   ],
   "dependencies": [
     {
-      "uuid": "be2e872b-b501-4a41-9dd5-aa48e2d7f66b",
+      "uuid": "df5073e5-731e-47a1-b961-a8146719f0e7",
       "version": [
         1,
-        3,
+        4,
         0
       ]
     },

@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.5
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#5A5A32",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.conduit",
       "minecraft:material_instances": {
         "*": {

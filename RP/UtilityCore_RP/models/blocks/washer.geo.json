@@ -6,11 +6,11 @@
         "identifier": "geometry.utilitycore.washer",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 2.5,
+        "visible_bounds_width": 2,
         "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
-          0.75,
+          1.0,
           0
         ]
       },
@@ -25,14 +25,14 @@
           "cubes": [
             {
               "origin": [
-                -6.0,
+                -7.0,
                 0,
-                -6.0
+                -7.0
               ],
               "size": [
-                12,
                 14,
-                12
+                14,
+                14
               ],
               "uv": [
                 0,

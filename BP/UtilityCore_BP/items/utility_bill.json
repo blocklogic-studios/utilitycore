@@ -4,14 +4,17 @@
     "description": {
       "identifier": "utilitycore:utility_bill",
       "menu_category": {
-        "category": "equipment",
+        "category": "items",
         "group": "utilitycore:itemGroup.name.utility",
         "is_hidden_in_commands": false
       }
     },
     "components": {
       "minecraft:max_stack_size": 16,
-      "minecraft:icon": "utilitycore_utility_bill"
+      "minecraft:icon": "utilitycore_utility_bill",
+      "minecraft:display_name": {
+        "value": "Utility Bill"
+      }
     }
   }
 }

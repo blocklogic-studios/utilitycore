@@ -6,11 +6,11 @@
         "identifier": "geometry.utilitycore.stove",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 2.5,
+        "visible_bounds_width": 2,
         "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
           0,
-          0.75,
+          1.0,
           0
         ]
       },
@@ -31,7 +31,7 @@
               ],
               "size": [
                 14,
-                12,
+                14,
                 14
               ],
               "uv": [

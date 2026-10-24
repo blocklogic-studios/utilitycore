@@ -11,7 +11,10 @@
     },
     "components": {
       "minecraft:max_stack_size": 1,
-      "minecraft:icon": "utilitycore_string_lights"
+      "minecraft:icon": "utilitycore_string_lights",
+      "minecraft:display_name": {
+        "value": "String Lights"
+      }
     }
   }
 }

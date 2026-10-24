@@ -25,19 +25,17 @@ const COMPONENTS = [
 system.beforeEvents.startup.subscribe((event) => {
   const reg = event.blockComponentRegistry;
   for (const id of COMPONENTS) {
-    reg.registerCustomComponent(id, { onPlayerInteract() {} });
+    try { reg.registerCustomComponent(id, { onPlayerInteract() {} }); }
+    catch (e) { console.warn("[UtilityCore] component", id, e); }
   }
-  console.log("[UtilityCore] Components registered");
+  console.log(`[UtilityCore] ${COMPONENTS.length} components registered`);
 });
 
 world.afterEvents.worldLoad.subscribe(() => {
   util.load();
   setupUIHandlers(util);
-  console.log("[UtilityCore] Power + water + home + ID + insurance ready");
+  console.log("[UtilityCore] Ready");
 });
 
-system.runInterval(() => {
-  util.tick();
-}, 20);
-
+system.runInterval(() => { util.tick(); }, 20);
 console.log("[UtilityCore] Script started");

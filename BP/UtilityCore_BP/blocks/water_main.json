@@ -11,9 +11,9 @@
     },
     "components": {
       "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.4
+        "seconds_to_destroy": 1.0
       },
-      "minecraft:map_color": "#32465A",
+      "minecraft:map_color": "#6688AA",
       "minecraft:geometry": "geometry.utilitycore.water_main",
       "minecraft:material_instances": {
         "*": {
@@ -23,26 +23,26 @@
       },
       "minecraft:collision_box": {
         "origin": [
-          -4.0,
+          -7.0,
           0,
-          -4.0
+          -7.0
         ],
         "size": [
-          8,
-          6,
-          8
+          14,
+          14,
+          14
         ]
       },
       "minecraft:selection_box": {
         "origin": [
-          -4.0,
+          -7.0,
           0,
-          -4.0
+          -7.0
         ],
         "size": [
-          8,
-          6,
-          8
+          14,
+          14,
+          14
         ]
       },
       "utilitycore:water_main": {}
